@@ -1,0 +1,92 @@
+body{
+	font-family: "Raleway","Helvetica Neue",Helvetica,"Myriad Pro","Lucida Grande",sans-serif !important;
+	height: 100vh;
+	position: realtive;
+}
+
+
+
+
+h1 , h2 {
+	margin-bottom: 3vh !important;
+	color : #5a6b77 !important;
+	font-weight: 100 !important;
+}
+
+.wrapper{
+	position: relative;
+
+}
+
+.sortable{
+	cursor: pointer !important;
+
+}
+
+.header{
+	background-image: linear-gradient(#eff2f5,#cfd8e0);
+	margin-bottom: 3vh;
+}
+#userDetailsError{
+	display: none;
+	margin-top: 5vh;
+}
+
+.login_form{
+	margin-top: 20vh;
+}
+
+.input-group {
+	margin-bottom: 1vh;
+}
+
+.page_actions{
+	margin-bottom: 3vh;
+	margin-top: 3vh;
+
+}
+
+#sort_direction{
+	margin-top: 1vh;
+	margin-bottom: 3vh;
+}
+
+
+
+#admin_top_menu {
+	margin-bottom: 3vh;
+	height: 5.5vh;
+	
+}
+.actions{
+	text-align: center;
+}
+
+.icon{
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+}
+.alert_section{
+	position: fixed !important;
+	bottom: 20px;
+}
+.alert{
+	width : 100%;
+}
+
+.page_title{
+	margin-top: 3vh !important;
+	margin-bottom: 6vh !important;	
+	text-align: center;
+}
+
+.chechbox_placeholder{
+	padding: 2vh !important;
+}
+
+.tsamid_checkbox{
+	line-height: 30px !important;
+	font-size: 40px !important;
+}
+

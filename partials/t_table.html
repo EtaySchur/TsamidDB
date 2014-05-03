@@ -1,0 +1,42 @@
+<section class="users_table">
+  <div class="search">
+    <h1>Artist Directory</h1>
+    <label>search: </label>
+    <input ng-model="query" placeholder="Search for artists" autofocus>
+
+    <label class="formgroup">by:
+      <select ng-model="artistOrder">
+        <option value="name">Name</option>
+        <option value="reknown">Reknown</option>
+      </select>
+    </label>
+
+    <label class="formgroup">
+      <input type="radio" ng-model="direction" name="direction" checked>
+      ascending
+     </label>
+    <label class="formgroup">
+      <input type="radio" ng-model="direction" name="direction" value="reverse">
+      descending
+    </label>
+   
+  </div>
+    <table class="table table-hover table-bordered col-md-16">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>User Name</th> 
+          <th>User Acl</th>
+      </tr>
+    </thead>
+  <tbody>
+    <tr class="artist cf" ng-repeat="item in users | filter: query">
+      <td></td>
+      <td>{{item.username}}</td> 
+      <td>{{item.acl_level}}</td>
+  </tr>
+  </tbody>
+
+  </table>
+
+</section>

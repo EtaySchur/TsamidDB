@@ -1,0 +1,121 @@
+
+<section class="groups_page">
+  <div class="search">
+    <h1 class="page_title" id="groups_page_title" align="center">My Groups <Manager></Manager></h1>
+   <div class="row-fluid">
+    <div class="input-group col-md-offset-6 col-md-4">
+      <input type="text" ng-model="query" class="form-control" placeholder="Search for Group">
+      <span class="input-group-addon"> <span class="glyphicon glyphicon-search"></span> </span>
+    </div>
+    <select ng-model="groupsOrder" class="form-control col-md-offset-6 col-md-4">
+        <option value="attributes.groupName">Group Name</option>
+      </select>
+
+   <div class="col-md-offset-6 col-md-4" id="sort_direction">
+      <span class="input-group-addon"> ascending
+         <input type="radio" ng-model="direction" name="direction" checked>
+      </span>
+      <span class="input-group-addon"> descending
+          <input type="radio" ng-model="direction" name="direction" value="reverse">
+      </span>
+    </div>
+  </div>
+ 
+  </div>
+
+  <div class="btn-group btn-group-lg page_actions col-md-12 col-md-offset-2"> 
+    <button data-toggle="modal" data-target="#addNewGroupModal" type="button" class="btn btn-success btn-lg">
+    <span class="glyphicon glyphicon-plus"></span> Add Group
+    </button>
+
+  </div>
+ 
+
+  
+    <table class="table table-hover table-bordered col-md-12">
+      <thead>
+        <tr>
+          <th class="table-bordered col-md-1">Select</th>
+          <th class="table-bordered col-md-6">Group Name</th>
+          <th class="table-bordered col-md-6">Date Created</th>
+          <th class="table-bordered col-md-3">Actions</th> 
+      </tr>
+    </thead>
+  <tbody>
+    <tr class="group cf" ng-repeat="item in myGroups | filter: query | orderBy: groupsOrder:direction">
+      <td> 
+        <span class="input-group-addon chechbox_placeholder">
+          <input class="tsamid_checkbox" type="checkbox" id="{{item.id}}">
+        </span> 
+      </td>
+      <td>
+
+      
+        <button class="btn btn-primary">     {{item.attributes.groupName}} 
+        </button> 
+      </td>
+      <td>
+        <input class="form-control col-md-10" type="text" ng-model=item.createdAt readonly>  
+      </td>
+
+      <td>
+      <div class="actions col-md-16"> 
+       
+        <a href="#/Groups_Manage/{{myGroups.indexOf(item)}}"> 
+          <button class="btn btn-default btn-lg">   
+          <span class="glyphicon glyphicon-pencil">   </span>  
+        </button> 
+        </a>
+         <button data-toggle="modal" data-target="#deleteDialog{{$index}}" type="button" class="btn btn-danger btn-lg">
+        <span class="glyphicon glyphicon-trash"></span> 
+        </button>
+         </div>
+        <div class="modal fade" id="deleteDialog{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Delete Group</h4>
+                </div>
+                <div class="modal-body">
+                  Are You Sure You Want To Delete {{item.attributes.groupName}} ? 
+                  <form role="form">
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button  data-dismiss="modal" id="delete_group" type="button" ng-click="deleteGroup(item , $index)" class="btn btn-danger">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+      </td> 
+     
+  </tr>
+  </tbody>
+  </table>
+  <div class="modal fade" id="addNewGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Add New Group</h4>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label>Group Name</label>
+                      <input type="text" class="form-control" placeholder="Enter Group Name" ng-model='newGroup.groupName' required>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button  data-dismiss="modal" id="save_changes" type="button" ng-click="saveGroup(newGroup)" class="btn btn-primary">Save New Group !!!</button>
+                </div>
+              </div>
+            </div>
+          </div>     
+</section>

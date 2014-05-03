@@ -1,0 +1,141 @@
+<script src="static/js/table_manage.js"></script>
+<section class="group_details_page">
+ 
+  <div class="search">
+     <h1 align="center" class="page_title"> {{currentGroup.attributes.groupName}} <Manager></Manager> </h1> 
+    <div class="input-group col-md-offset-6 col-md-4">
+      <input type="text" ng-model="query" class="form-control" placeholder="Search for User">
+      <span class="input-group-addon"> <span class="glyphicon glyphicon-search"></span> </span>
+    </div>
+
+    
+      <select ng-model="userOrder" class="form-control col-md-offset-6 col-md-4">
+        <option value="attributes.username">User Name</option>
+        <option value="attributes.email">Email</option>
+      </select>
+   
+
+    <div class="col-md-offset-6 col-md-4" id="sort_direction">
+      <span class="input-group-addon"> ascending
+         <input type="radio" ng-model="direction" name="direction" checked>
+      </span>
+      <span class="input-group-addon"> descending
+          <input type="radio" ng-model="direction" name="direction" value="reverse">
+      </span>
+    </div>
+   
+  </div>
+  <div class="btn-group btn-group-lg page_actions col-md-12 col-md-offset-2"> 
+    <button data-toggle="modal" data-target="#addNewGroupUserModal" type="button" class="btn btn-success btn-lg">
+    <span class="glyphicon glyphicon-plus"></span> Add User To Group
+    </button>
+  </div>
+    <table class="table table-hover table-bordered col-md-12">
+      <thead>
+        <tr>
+          <th class="table-bordered col-md-1">Select</th>
+          <th ng-click="sort('username')" class="table-bordered col-md-4 sortable">User Name</th> 
+          
+          <th ng-click="sort('email')" class="table-bordered col-md-4 sortable">Email</th>
+          <th class="table-bordered col-md-1">Actions</th>
+      </tr>
+    </thead>
+  <tbody>
+    <tr class="user cf" ng-repeat="item in users | filter: query | orderBy: userOrder:direction">
+      <td>  
+        <span class="input-group-addon chechbox_placeholder">
+          <input class="tsamid_checkbox" type="checkbox" id="{{item.id}}">
+        </span> </td>
+      <td> 
+        <button class="btn btn-primary"  data-toggle="modal" data-target="#myModal{{item.id}}"> {{item.attributes.username}} 
+        </button> </td> 
+      <td> <input class="form-control" type="text" ng-model=item.attributes.email ng-change="updateUser(item)"  readonly>  
+      </td>
+      <td>
+      <div class="actions col-md-16"> 
+         <button data-toggle="modal" data-target="#deleteDialog{{$index}}" type="button" class="btn btn-default btn-lg">
+          <span class="glyphicon glyphicon-trash"></span> 
+        </button>
+        <div class="modal fade" id="deleteDialog{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Delete User</h4>
+                </div>
+                <div class="modal-body">
+                  Are You Sure You Want To Delete {{item.attributes.username}} ? 
+                  <form role="form">
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button  data-dismiss="modal" id="delete_game" type="button" ng-click="deleteUser(item , $index)" class="btn btn-danger">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      </div>
+      </td>
+      <td width="1%"> 
+        <!-- Modal -->
+        
+          <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Edit User</h4>
+                </div>
+                <div class="modal-body">
+                  <form role="form">
+                    <div class="form-group">
+                      <label>User Name</label>
+                      <input type="text" class="form-control"  ng-model=item.attributes.username placeholder="Enter User Name">
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" class="form-control"  placeholder="Email" ng-model=item.attributes.email>
+                    </div>
+                     <div class="form-group">
+                      <label>Gender</label>
+                      <input type="text" class="form-control"  placeholder="Email" ng-model=item.attributes.gender readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputFile">Upload User Image</label>
+                      <input type="file" id="exampleInputFile">
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" ng-click="saveUser(item)" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </td>
+  </tr>
+  </tbody>
+  </table>
+  <div class="modal fade" id="addNewGroupUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Add Users To Group</h4>
+                </div>
+                <div class="modal-body">
+                  <select  id="element" name="myselect" multiple>
+    				<option ng-repeat="item in allUsers | orderBy : allUsersOrder">{{item.attributes.username}}</option>	
+				</select>
+                </div>
+                <div class="modal-footer">
+                  <button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button  data-dismiss="modal" id="save_changes" type="button" ng-click="saveGame(newGameModel)" class="btn btn-primary">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+</section>
