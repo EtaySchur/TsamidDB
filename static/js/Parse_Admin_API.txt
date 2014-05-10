@@ -1,0 +1,49 @@
+
+function to get parse objects by id .
+
+/***** getParseObjectById = function ( callback , tableName , colName , objectId , pointerCol  ) *****/
+
+@Params : @callback   - call back function to be used when query finished
+          @tableName  - define the requested Parse Class (Table) name. ( i.e "TriviaQuestions")
+          @colName    - OPTIONAL -  pass column name to match the objectId ( i.e "gameId" in "TriviaQuestions" table)
+          @objectId   - OPTIONAL - pass objectId to get specific matching objects .
+                        case NULL will return all objects from table
+          @pointerCol - OPTIONAL - pass pointer name to get all its data . ( support 1 pointer at current version )
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+function to get parse object by parse object (not id) .
+
+/***** getParseObject = function ( callback , tableName , colName , object  ) *****/
+
+@Params : @callback   - call back function to be used when query finished
+          @tableName  - define the requested Parse Class (Table) name. ( i.e "UserGroups")
+          @colName    - OPTIONAL -  pass column name to match the parse object  ( i.e "ownerId" in "UserGroups" table)
+          @object     - OPTIONAL -  pass Parse Class object to match query ( i.e. "Parse.User.current()" )
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+function to save parse object to cloud .
+
+
+/***** saveObject = function (callback , tableName , object)  *****/
+
+@Params : @callback   - call back function to be used when save  process finished
+          @tableName  - define the requested Parse Class (Table) name. ( i.e "UserGroups")
+          @object     - object to be save (can be Parse object , or not ) , data will be save as key - value in DB
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+/*****  deleteObject = function (callback , parseObject)    *****/
+
+@Params : @callback   - call back function to be used when delete process  finished
+          @parseObject - parseObject to be deleted.
+
+
+------------------------------------------------------------------------------------------------------------------------
