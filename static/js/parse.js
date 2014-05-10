@@ -494,5 +494,88 @@ function createAvatarFromParseObject (parseAvatar, option) {
   return userAvatar;
 }
 
+function getParseObjectById ( callback , tableName , colName , objectId , pointerCol  ){
+    $('body').css('cursor', 'progress');
+    var table = Parse.Object.extend(tableName);
+    var query = new Parse.Query(table);
+    query.include(pointerCol);
+    if(colName){
+        query.equalTo( colName , objectId );
+        query.find({
+            success: function(results) {
+                $('body').css('cursor', 'default');
+                callback(results);
+            },
+            error: function(error) {
+                $('body').css('cursor', 'default');
+                callback(error);
+            }
+        });
+    }else{
+        query.find().then(
+            function(results) {
+                console.log('Query is OK')
+                console.log(results);
+                $('body').css('cursor', 'default');
+                callback(results);
+            },
+            function(error) {
+                console.log('Query Failed')
+                $('body').css('cursor', 'default');
+                callback(error);
+            });
+    }
+};
+
+
+function getLessonContent  (callback , lessonId){
+    var resultArray = {};
+    var gamesFlag = false;
+    var contentFlag = false;
+    resultArray['content'] = {};
+    resultArray['games'] = {};
+
+    if(!lessonId){
+        lessonId = 'wmKCpsrQ5T';
+    }
+
+    function getContentCallback(result){
+
+
+        for ( var i = 0 ; i < result.length ; i++ ){
+            resultArray.content[i] = result[i].attributes.content.attributes;
+            resultArray.content[i][result[i].attributes.content.attributes.type] = true;
+            resultArray.content[i]['objectId'] = result[i].attributes.content.id;
+        }
+        contentFlag = true;
+
+    };
+
+    function getGamesCallback(result){
+
+        for ( var i = 0 ; i < result.length ; i++ ){
+            resultArray.games[i] = result[i].attributes.game.attributes;
+            resultArray.games[i]['objectId'] = result[i].attributes.game.id;
+        }
+        gamesFlag = true;
+
+    };
+
+    if(gamesFlag && contentFlag ){
+        callback(resultArray);
+    }
+
+
+
+    getParseObjectById(getContentCallback , "Content2Lesson" , 'lessonId' , lessonId , 'content');
+    getParseObjectById(getGamesCallback , "Games2Lesson" , 'lessonId' , lessonId , 'game');
+
+
+};
+
+
+
+
+
 
 

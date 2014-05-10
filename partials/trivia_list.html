@@ -1,0 +1,184 @@
+
+<section class="trivia_page">
+    <div class="search">
+        <h1 class="page_title" id="games_page_title" align="center">Available Trivia Games <Manager></Manager></h1>
+        <div class="row">
+            <div class="input-group col-md-offset-6 col-md-4">
+                <input type="text" ng-model="query" class="form-control" placeholder="Search for User">
+                <span class="input-group-addon"> <span class="glyphicon glyphicon-search"></span> </span>
+            </div>
+            <select ng-model="gamesOrder" class="form-control col-md-offset-6 col-md-4">
+                <option value="gameName">Game Name</option>
+                <option value="createdAt">Date Created</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-6 col-md-4" id="sort_direction">
+      <span class="input-group-addon"> ascending
+         <input type="radio" ng-model="direction" name="direction" checked>
+      </span>
+      <span class="input-group-addon"> descending
+          <input type="radio" ng-model="direction" name="direction" value="reverse">
+      </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="btn-group btn-group-lg page_actions col-md-3 col-md-offset-2">
+            <button data-toggle="modal" data-target="#addNewQuestionModal" type="button" class="btn btn-success btn-lg">
+                <span class="glyphicon glyphicon-plus"></span> Add New Question
+            </button>
+        </div>
+        <div class="page_actions col-md-3">
+            <button  ng-show="disableDeleteButtonDisplay" ng-style="deleteSelectedButtonStyle"  type="button" class="btn btn-danger btn-lg disabled">
+                <span class="glyphicon glyphicon-trash"></span> Delete Selected
+            </button>
+
+            <button  ng-hide="disableDeleteButtonDisplay" ng-style="deleteSelectedButtonStyle" data-toggle="modal" data-target="#deleteSelecetedModal" type="button" class="btn btn-danger btn-lg">
+                <span class="glyphicon glyphicon-trash"></span> Delete Selected
+            </button>
+        </div>
+    </div>
+
+
+
+
+    <table class="table table-hover table-bordered col-md-12">
+        <thead>
+        <tr>
+            <th class="table-bordered col-md-1">Select</th>
+            <th ng-click="sort('gameName')" class="table-bordered col-md-8 sortable">Game Name</th>
+            <th ng-click="sort('createdAt')" class="table-bordered col-md-6 sortable">Date Created</th>
+            <th class="table-bordered col-md-1">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="game cf" ng-repeat="item in games | filter: query | orderBy: gamesOrder:direction">
+            <td>
+        <span class="input-group-addon chechbox_placeholder">
+          <input ng-checked="checkedItems.indexOf(item) == -1" ng-click="toggleCheck(item)" class="tsamid_checkbox" type="checkbox" id="{{item.id}}">
+        </span>
+            </td>
+            <td>
+                <a href="">
+                    <button class="btn btn-primary"  data-toggle="modal" data-target="#myModal{{item.id}}"> {{item.attributes.gameName}}
+                    </button>
+                </a>
+
+            </td>
+            <td>
+                <input class="form-control col-md-10" type="text" ng-model=item.createdAt readonly>
+            </td>
+
+            <td>
+                <div class="actions col-md-16">
+                    <button data-toggle="modal" data-target="#deleteDialog{{$index}}" type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <div class="modal fade" id="deleteDialog{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">Delete Game</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Are You Sure You Want To Delete {{item.attributes.gameName}} ?
+                                    <form role="form">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button  data-dismiss="modal" id="delete_game" type="button" ng-click="deleteGame(item , $index)" class="btn btn-danger">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td width="1%">
+                <!-- Modal -->
+
+                <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Edit Game</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Game Name</label>
+                                        <input type="text" class="form-control"  ng-model=item.attributes.gameName placeholder="Enter User Name">
+                                    </div>
+
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button  data-dismiss="modal" id="save_changes" type="button" ng-click="saveGame(item)" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="modal fade" id="addNewQuestionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add New Question</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label> Question Text</label>
+                            <input type="text" class="form-control" placeholder="Enter Question Text" ng-model='questionModel.questionText' required>
+                        </div>
+                        <div class="form-group">
+                            <label> Answer 1 Text</label>
+                            <input type="text" class="form-control" placeholder="Enter Answer Text" ng-model='answerModel1.answerText' required>
+                            <input type="radio" ng-model="answerModel.correctAnswer">
+                        </div>
+                        <div class="form-group">
+                            <label> Answer 2 Text</label>
+                            <input type="text" class="form-control" placeholder="Enter Answer Text" ng-model='answerModel2.answerText' required>
+                            <input type="radio" ng-model="answerModel.correctAnswer">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button  data-dismiss="modal" id="save_changes" type="button" ng-click="saveNewQuestion(questionModel , answerModel1 , answerModel2)" class="btn btn-primary">Save New Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Multiple Delete Modal -->
+    <div class="modal fade" id="deleteSelecetedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Delete Selected Games</h4>
+                </div>
+                <div class="modal-body">
+                    Are You Sure You Want To Delete All Selected Items  ?
+                    <form role="form">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button  data-dismiss="modal" id="delete_game" type="button" ng-click="deleteSelectedItems()" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

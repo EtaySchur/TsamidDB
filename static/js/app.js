@@ -2,7 +2,10 @@ var myApp = angular.module('myApp', [
   'ngRoute',
   'userController',
   'gamesController',
-  'groupController'
+  'contentController',
+  'lessonsController',
+  'groupController',
+  'mainController'
 ]);
 
 myApp.config(['$routeProvider', function($routeProvider) {
@@ -15,9 +18,9 @@ myApp.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/table_games.html',
     controller: 'GamesController'
   }).
-  when('/Content_Manage/:contentId', {
-    templateUrl: 'partials/content_table.html',
-    controller: 'TableController'
+  when('/Content_Manage', {
+    templateUrl: 'partials/table_content.html',
+    controller: 'ContentListController'
   }).
   when('/Groups_Manage' , {
       templateUrl: 'partials/groups_table.html',
@@ -27,7 +30,16 @@ myApp.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'partials/group_details.html',
       controller: 'GroupDetailsController'
   }).
+  when('/Lessons_Manage' , {
+       templateUrl: 'partials/table_lessons.html',
+       controller: 'LessonsListController'
+   }).
+   when('/Games_Manage/Trivia' , {
+        templateUrl: 'partials/trivia_list.html',
+        controller: 'TriviaListController'
+   }).
   otherwise({
     redirectTo: '/Users_Manage'
   });
+
 }]);

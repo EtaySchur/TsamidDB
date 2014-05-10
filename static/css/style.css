@@ -55,7 +55,7 @@ h1 , h2 {
 
 #admin_top_menu {
 	margin-bottom: 3vh;
-	height: 5.5vh;
+	height: 4vh;
 	
 }
 .actions{
@@ -88,5 +88,10 @@ h1 , h2 {
 .tsamid_checkbox{
 	line-height: 30px !important;
 	font-size: 40px !important;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: default;
 }
 

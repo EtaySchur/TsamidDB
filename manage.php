@@ -111,7 +111,7 @@ if ($client->getAccessToken() && isset($_GET['url'])) {
 
 
 <!doctype html>
-<html lang="en" ng-app="myApp">
+<html lang="en" ng-app="myApp" ng-controller="MainController">
 <head>
   <meta charset="UTF-8">
   <title>Angular Management</title>
@@ -152,10 +152,11 @@ if ($client->getAccessToken() && isset($_GET['url'])) {
             <div class="header col-md-16">
            <!--  <h1 class="col-md-8 col-md-offset-4" id="admin_title"> Tsamid Admin App </h1> -->
               <ul class="nav nav-pills col-md-12" id="admin_top_menu">
-                <li ng-class="{ active: isActive('/') }" class="menu_category col-md-3"><a href="#/">Home</a></li>
-                <li  ng-class="{ active: isActive('/Users_Manage') }" class="menu_category col-md-3" id="manage_users"><a href="#/Users_Manage">Manage Users</a></li>
-                <li ng-class="{ active: isActive('/Games_Manage') }" class="menu_category col-md-3" id="manage_games"><a href="#/Games_Manage">Games Zone</a></li>
-                <li ng-class="{ active: isActive('/Groups_Manage') }" class="menu_category col-md-3" id="manage_groups"><a href="#/Groups_Manage">Manage Groups</a></li>
+                <li ng-click="initVars()" ng-class="{ active: isActive('/Lessons_Manage') }" class="menu_category col-md-3"><a href="#/Lessons_Manage">Manage Lessons</a></li>
+                <li ng-click="initVars()" ng-class="{ active: isActive('/Users_Manage') }" class="menu_category col-md-3" id="manage_users"><a href="#/Users_Manage">Manage Users</a></li>
+                <li ng-click="initVars()" ng-class="{ active: isActive('/Games_Manage') }" class="menu_category col-md-3" id="manage_games"><a href="#/Games_Manage">Games Zone</a></li>
+                <li ng-click="initVars()" ng-class="{ active: isActive('/Groups_Manage') }" class="menu_category col-md-3" id="manage_groups"><a href="#/Groups_Manage">Manage Groups</a></li>
+                <li ng-click="initVars()" ng-class="{ active: isActive('/Content_Manage') }" class="menu_category col-md-3" id="manage_content"><a href="#/Content_Manage">Manage Content</a></li>
               </ul>
             <div class="col-md-3">Logged in as : {{currentUser.attributes.username}}  </div>
              <a class='logout btn btn-danger col-md-1' href='?logout'> LogOut</a>

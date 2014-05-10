@@ -34,11 +34,32 @@ ParseManager.prototype.setCurrentUser = function (currentUser){
 	this._currentUser = currentUser;
 };
 
+ParseManager.prototype.deleteMultipleItems = function (callback , parseObjects) {
+    console.log('PARSE OBJECTS');
+    console.log(parseObjects);
+    var counter = 0;
+    function deleteItemCallback(result){
+           // TODO CHECK FOR ERROROS
+           counter++;
+           if(counter == parseObjects.length){
+
+               callback(result);
+           }
+    };
+
+    for (var index = 0; index < parseObjects.length; ++index) {
+        this.deleteObject( deleteItemCallback , parseObjects[index]);
+    }
+
+
+
+};
+
 ParseManager.prototype.deleteObject = function (callback , parseObject){
 	$('body').css('cursor' , 'progress');  
 	parseObject.destroy({
   		success: function(myObject) {
-    		callback(true);
+    		callback(myObject);
     		$('body').css('cursor' , 'default');
   	},
   		error: function(myObject, error) {
@@ -169,6 +190,8 @@ ParseManager.prototype.getParseObject = function ( callback , tableName , colNam
 	 }
 };
 
+
+
 ParseManager.prototype.getParseObjectById = function ( callback , tableName , colName , objectId , pointerCol  ){
 	 $('body').css('cursor', 'progress');
 	 var table = Parse.Object.extend(tableName);
@@ -200,6 +223,51 @@ ParseManager.prototype.getParseObjectById = function ( callback , tableName , co
               callback(error);
             });
 	 }
+};
+
+ ParseManager.prototype.getLessonContent = function (callback , lessonId){
+     var resultArray = {};
+     var gamesFlag = false;
+     var contentFlag = false;
+     resultArray['content'] = {};
+     resultArray['games'] = {};
+
+    if(!lessonId){
+        lessonId = 'wmKCpsrQ5T';
+    }
+
+    function getContentCallback(result){
+
+
+         for ( var i = 0 ; i < result.length ; i++ ){
+             resultArray.content[i] = result[i].attributes.content.attributes;
+             resultArray.content[i][result[i].attributes.content.attributes.type] = true;
+             resultArray.content[i]['objectId'] = result[i].attributes.content.id;
+         }
+         contentFlag = true;
+
+     };
+
+     function getGamesCallback(result){
+
+         for ( var i = 0 ; i < result.length ; i++ ){
+             resultArray.games[i] = result[i].attributes.game.attributes;
+             resultArray.games[i]['objectId'] = result[i].attributes.game.id;
+         }
+         gamesFlag = true;
+
+     };
+
+     if(gamesFlag && contentFlag ){
+         callback(resultArray);
+     }
+
+
+
+         this.getParseObjectById(getContentCallback , "Content2Lesson" , 'lessonId' , lessonId , 'content');
+         this.getParseObjectById(getGamesCallback , "Games2Lesson" , 'lessonId' , lessonId , 'game');
+
+
 };
 
 

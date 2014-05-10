@@ -1,0 +1,165 @@
+
+<section class="content_page">
+
+    <div class="search">
+        <h1 class="page_title" id="games_page_title" align="center">Available Content <Manager></Manager></h1>
+        <div class="row-fluid">
+            <div class="input-group col-md-offset-6 col-md-4">
+                <input type="text" ng-model="query" class="form-control" placeholder="Search for Content">
+                <span class="input-group-addon"> <span class="glyphicon glyphicon-search"></span> </span>
+            </div>
+            <select ng-model="contentOrder" class="form-control col-md-offset-6 col-md-4">
+                <option value="attributes.title">Content Title</option>
+                <option value="attributes.type">Content Type</option>
+
+            </select>
+
+            <div class="col-md-offset-6 col-md-4" id="sort_direction">
+      <span class="input-group-addon"> ascending
+         <input type="radio" ng-model="direction" name="direction" checked>
+      </span>
+      <span class="input-group-addon"> descending
+          <input type="radio" ng-model="direction" name="direction" value="reverse">
+      </span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="btn-group btn-group-lg page_actions col-md-12 col-md-offset-2">
+        <button data-toggle="modal" data-target="#addNewContantModal" type="button" class="btn btn-success btn-lg">
+            <span class="glyphicon glyphicon-plus"></span> Add Content
+        </button>
+    </div>
+
+
+
+    <table class="table table-hover table-bordered col-md-12">
+        <thead>
+        <tr>
+            <th class="table-bordered col-md-1">Select</th>
+            <th ng-click="sort('title')" class="table-bordered col-md-4 sortable">Content Title</th>
+            <th ng-click="sort('type')" class="table-bordered col-md-3 sortable">Type</th>
+            <th class="table-bordered col-md-6">Date Created</th>
+            <th class="table-bordered col-md-1">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="content cf" ng-repeat="item in content | filter: query | orderBy: contentOrder:direction">
+            <td>
+        <span class="input-group-addon chechbox_placeholder">
+          <input class="tsamid_checkbox" type="checkbox" id="{{item.id}}">
+        </span>
+            </td>
+            <td>
+                <button class="btn btn-primary"  data-toggle="modal" data-target="#myModal{{item.id}}"> {{item.attributes.title}}
+                </button>
+            </td>
+            <td>
+                <input class="form-control col-md-10" type="text" ng-model=item.attributes.type readonly>
+            </td>
+            <td>
+                <input class="form-control col-md-10" type="text" ng-model=item.createdAt readonly>
+            </td>
+
+
+            <td>
+                <div class="actions col-md-16">
+                    <button data-toggle="modal" data-target="#deleteDialog{{$index}}" type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <div class="modal fade" id="deleteDialog{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">Delete Content</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Are You Sure You Want To Delete {{item.attributes.title}} ?
+                                    <form role="form">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button  data-dismiss="modal" id="delete_game" type="button" ng-click="deleteContent(item , $index)" class="btn btn-danger">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td width="1%">
+
+
+                <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Edit Content</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Content Title</label>
+                                        <input type="text" class="form-control"  ng-model=item.attributes.title placeholder="Enter User Name">
+                                    </div>
+                                    <select  ng-init='item.attributes.type'  class="form-control">
+                                        <option  selected="{isSelected(item , 'video')}" value="video">Video</option>
+                                        <option  selected="{isSelected(item , 'presentation')}" value="presentation">Presentation</option>
+                                        <option  selected="{isSelected(item , 'document')}" value="document">Document</option>
+                                    </select>
+                                    <div class="form-group">
+                                        <label>Content Link</label>
+                                        <input type="text" class="form-control"  ng-model=item.attributes.mediaId placeholder="Enter Media  ID">
+                                    </div>
+
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button  data-dismiss="modal" id="save_changes" type="button" ng-click="saveContent(item)" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="modal fade" id="addNewContantModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add New Content</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label>Content Title</label>
+                            <input type="text" class="form-control" placeholder="Enter Content Title" ng-model='newContentModel.title' required>
+                        </div>
+                        <select  ng-model='newContentModel.type' class="form-control">
+                            <option select value="video">Video</option>
+                            <option value="presentation">Presentation</option>
+                            <option value="document">Document</option>
+                        </select>
+                        <div class="form-group">
+                            <label>Content Media Id</label>
+                            <input type="text" class="form-control" placeholder="Enter Content Link" ng-model='newContentModel.mediaId' required>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button  type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button  data-dismiss="modal" id="save_changes" type="button" ng-click="saveContent(newContentModel)" class="btn btn-primary">Save New Content</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
